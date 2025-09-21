@@ -80,91 +80,68 @@
 3.  启动前端开发服务器: `npm run dev`
 4.  访问 `http://localhost:5173/` 查看应用。
 
-## Docker Compose 部署
+## Docker Hub 镜像部署
 
-为了更方便地部署前后端服务，本项目提供了 `docker-compose.yml` 文件。
+为了更方便地部署前后端服务，本项目已将 Docker 镜像发布到 Docker Hub。
 
 ### 前提条件
-
-*   已安装 Docker 和 Docker Compose。
+*   已安装 Docker。
 
 ### 部署步骤
 
-1.  **创建 `.env` 文件**
+1.  **拉取 Docker Hub 镜像**
 
-    在项目根目录下的 `server` 文件夹中创建 `.env` 文件，并配置 `COMIC_BASE_PATH` (漫画存放的根目录)。
+    从 Docker Hub 拉取最新镜像：
+    ```bash
+    docker pull ojdev/local_comic_reader:latest
+    ```
 
+2.  **配置必要的环境变量**
+
+    创建 `server/.env` 文件，并配置 `COMIC_BASE_PATH` (漫画存放的根目录)。
     示例 `server/.env`:
     ```
     COMIC_BASE_PATH=/app/Comics
     CORS_ORIGIN=http://localhost:5173
     ```
+    **注意**: 在 Docker 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:5173` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
 
-    **注意**: 在 Docker Compose 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:5173` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
+3.  **运行容器**
 
-2.  **修改 `docker-compose.yml` (如果需要)**
+    使用以下命令运行 Docker 容器，并挂载你的漫画目录和环境变量文件：
+    ```bash
+    docker run -d \
+      -p 5173:5173 \
+      -p 3000:3000 \
+      -v /path/to/your/comics:/app/Comics \
+      --env-file ./server/.env \
+      ojdev/local_comic_reader:latest
+    ```
+    **请务必修改 `/path/to/your/comics` 为你的实际漫画存储路径。**
 
-    根据你的实际需求，可能需要修改 `docker-compose.yml` 文件中的端口映射或卷挂载路径。
+4.  **验证部署是否成功**
 
-    ```yaml
-    version: '3.8'
-    services:
-      frontend:
-        build:
-          context: .
-          dockerfile: Dockerfile
-        ports:
-          - "5173:5173" # 前端服务端口
-        volumes:
-          - .:/app
-        depends_on:
-          - backend
-
-      backend:
-        build:
-          context: ./server
-          dockerfile: Dockerfile
-        ports:
-          - "3000:3000" # 后端服务端口
-        volumes:
-          - ./server:/app/server
-          - /path/to/your/comics:/app/Comics # 挂载你的漫画目录
-        env_file:
-          - ./server/.env
+    服务启动后，你可以在浏览器中访问 `http://localhost:5173` 来使用应用。
+    你可以通过以下命令查看容器日志：
+    ```bash
+    docker logs <container_id_or_name>
     ```
 
-    **请务必修改 `backend` 服务中的 `volumes` 挂载路径 `/path/to/your/comics` 为你的实际漫画存储路径。**
+### 常用 Docker 命令
 
-3.  **启动服务**
-
-    在项目根目录下执行以下命令启动所有服务：
-
+*   **查看运行中的容器**:
     ```bash
-    docker-compose up --build -d
+    docker ps
     ```
-
-    *   `--build`: 如果镜像不存在或 `Dockerfile` 有更新，则重新构建镜像。
-    *   `-d`: 后台运行容器。
-
-4.  **访问应用**
-
-    服务启动后，你可以在浏览器中访问 `http://localhost:5173` (如果前端映射到 5173 端口) 来使用应用。
-
-### 常用 Docker Compose 命令
-
-*   **停止服务**:
+*   **停止容器**:
     ```bash
-    docker-compose stop
+    docker stop <container_id_or_name>
     ```
-*   **停止并删除容器、网络、卷和镜像**:
+*   **删除容器**:
     ```bash
-    docker-compose down
+    docker rm <container_id_or_name>
     ```
-*   **查看服务状态**:
+*   **删除镜像**:
     ```bash
-    docker-compose ps
-    ```
-*   **查看服务日志**:
-    ```bash
-    docker-compose logs -f
+    docker rmi ojdev/local_comic_reader:latest
     ```
