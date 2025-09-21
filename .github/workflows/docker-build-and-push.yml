@@ -9,7 +9,7 @@ jobs:
   build-and-push:
     runs-on: ubuntu-latest
     env:
-      DOCKER_IMAGE_NAME: ${{ github.repository }}
+      DOCKER_IMAGE_NAME: luacloud/local_comic_reader
 
     steps:
     - name: Checkout code
