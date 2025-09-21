@@ -1,0 +1,140 @@
+.refresh-button {
+  background-color: #4CAF50; /* Green */
+  border: none;
+  color: white;
+  padding: 10px 20px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  margin: 4px 2px;
+  cursor: pointer;
+  border-radius: 8px;
+}
+
+.comic-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+  gap: 20px;
+}
+
+.comic-card {
+  border: 1px solid #ccc;
+  padding: 10px;
+  text-align: center;
+  cursor: pointer; /* Add cursor pointer to indicate it's clickable */
+}
+
+.comic-cover {
+  max-width: 100%;
+  height: auto;
+}
+
+.comic-title {
+  font-size: 1.2em;
+  margin-top: 10px;
+}
+
+.refresh-prompt {
+  background-color: #ffeb3b;
+  color: #333;
+  padding: 10px;
+  margin-bottom: 20px;
+  border-radius: 8px;
+  text-align: center;
+  font-weight: bold;
+}
+
+.back-to-top-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 70px; /* 进一步增大按钮尺寸 */
+  height: 70px; /* 进一步增大按钮尺寸 */
+  font-size: 1.2em;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+  z-index: 1000;
+}
+
+.back-to-top-button:hover {
+  background-color: #0056b3;
+}
+
+.back-to-top-button .icon {
+  width: 60px !important; /* 进一步增大图标尺寸并强制应用 */
+  height: 60px !important; /* 进一步增大图标尺寸并强制应用 */
+  /* fill: white; */ /* 移除此行，直接在 path 上设置 fill */
+}
+.tag-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.filter-tag {
+  padding: 8px 12px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+}
+
+.filter-tag:hover {
+  background-color: #d0d0d0;
+}
+
+.filter-tag.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+@media (max-width: 768px) {
+  .comic-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr)); /* 更小的网格列 */
+    gap: 10px;
+  }
+
+  .comic-card {
+    padding: 5px;
+  }
+
+  .comic-title {
+    font-size: 0.9em;
+  }
+
+  .back-to-top-button {
+    width: 50px;
+    height: 50px;
+    font-size: 1em;
+    bottom: 15px;
+    right: 15px;
+  }
+
+  .back-to-top-button .icon {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .tag-filter-container {
+    gap: 5px;
+    padding: 5px;
+  }
+
+  .filter-tag {
+    padding: 6px 10px;
+    font-size: 0.8em;
+  }
+}
