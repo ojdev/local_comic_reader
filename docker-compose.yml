@@ -1,0 +1,24 @@
+version: '3.8'
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5173:80" # 前端服务端口，将容器的80端口映射到宿主机的5173端口
+    volumes:
+      - .:/app
+    depends_on:
+      - backend
+
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000" # 后端服务端口
+    volumes:
+      - ./server:/app/server
+      - /path/to/your/comics:/app/Comics # 挂载你的漫画目录，请替换为实际路径
+    env_file:
+      - ./server/.env
