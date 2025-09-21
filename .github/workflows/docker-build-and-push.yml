@@ -28,6 +28,11 @@ jobs:
       with:
         context: .
         push: true
-        tags: |
-          ojdev/local_comic_reader:latest
-          ojdev/local_comic_reader:${{ steps.generate_version.outputs.VERSION }}
+        tags: ${{ env.DOCKER_IMAGE_NAME }}:latest,${{ env.DOCKER_IMAGE_NAME }}:${{ env.VERSION }}
+      - name: Update Docker Hub Description
+        uses: peter-evans/dockerhub-description@v4
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+          repository: ${{ env.DOCKER_IMAGE_NAME }}
+          readme-filepath: ./README.md
