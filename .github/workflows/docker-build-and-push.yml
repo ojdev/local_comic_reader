@@ -19,9 +19,15 @@ jobs:
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_TOKEN }}
 
+    - name: Generate version tag
+      id: generate_version
+      run: echo "VERSION=$(date +'%Y.%m.%d').${{ github.run_number }}" >> $GITHUB_OUTPUT
+
     - name: Build and push Docker image
       uses: docker/build-push-action@v4
       with:
         context: .
         push: true
-        tags: ojdev/local_comic_reader:latest
+        tags: |
+          ojdev/local_comic_reader:latest
+          ojdev/local_comic_reader:${{ steps.generate_version.outputs.VERSION }}
