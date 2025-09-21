@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package.json package-lock.json ./ 
 RUN npm install
 COPY . .
+ENV VITE_LOG_LEVEL=info
 RUN npm run build
 
 FROM nginx:stable-alpine
