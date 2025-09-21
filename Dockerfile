@@ -3,7 +3,7 @@ ENV COMIC_BASE_PATH=/app/comics
 WORKDIR /app
 COPY package.json package-lock.json ./ 
 RUN npm install
-COPY . .
+RUN npm install -g vite
 ENV VITE_LOG_LEVEL=info
 RUN npm run build
 
