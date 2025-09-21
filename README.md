@@ -148,7 +148,7 @@
 
 ## Docker Compose 部署
 
-为了更方便地部署前后端服务，本项目提供了 `docker-compose.yml` 文件。
+为了更方便地部署前后端服务，本项目提供了 `docker-compose.yml` 文件，并支持直接从 Docker Hub 拉取镜像进行部署。
 
 ### 前提条件
 
@@ -168,30 +168,26 @@
 
     **注意**: 在 Docker Compose 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:5173` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
 
-2.  **修改 `docker-compose.yml` (如果需要)**
+2.  **创建 `docker-compose.yml` 文件**
 
-    根据你的实际需求，可能需要修改 `docker-compose.yml` 文件中的端口映射或卷挂载路径。
+    在项目根目录下创建 `docker-compose.yml` 文件，内容如下：
 
     ```yaml
     version: '3.8'
     services:
       frontend:
-        build:
-          context: .
-          dockerfile: Dockerfile
+        image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取前端镜像
         ports:
-          - "5173:5173" # 前端服务端口
+          - "5173:5173" # 前端服务端口，局域网内可通过宿主机IP:5173访问
         volumes:
           - .:/app
         depends_on:
           - backend
 
       backend:
-        build:
-          context: ./server
-          dockerfile: Dockerfile
+        image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取后端镜像
         ports:
-          - "3000:3000" # 后端服务端口
+          - "3000:3000" # 后端服务端口，局域网内可通过宿主机IP:3000访问
         volumes:
           - ./server:/app/server
           - /path/to/your/comics:/app/Comics # 挂载你的漫画目录
@@ -206,15 +202,14 @@
     在项目根目录下执行以下命令启动所有服务：
 
     ```bash
-    docker-compose up --build -d
+    docker-compose up -d
     ```
 
-    *   `--build`: 如果镜像不存在或 `Dockerfile` 有更新，则重新构建镜像。
     *   `-d`: 后台运行容器。
 
 4.  **访问应用**
 
-    服务启动后，你可以在浏览器中访问 `http://localhost:5173` (如果前端映射到 5173 端口) 来使用应用。
+    服务启动后，你可以在浏览器中访问 `http://<宿主机IP>:5173` (如果前端映射到 5173 端口) 来使用应用。例如，如果你的宿主机 IP 是 `192.168.1.100`，则访问 `http://192.168.1.100:5173`。
 
 ### 常用 Docker Compose 命令
 
