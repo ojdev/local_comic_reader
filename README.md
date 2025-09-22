@@ -148,7 +148,7 @@
 
 ## Docker Compose 部署
 
-为了更方便地部署前后端服务，本项目提供了 `docker-compose.yml` 文件，并支持直接从 Docker Hub 拉取镜像进行部署。
+为了更方便地部署前后端服务，本项目提供了 `docker-compose.yml` 文件，用于本地构建和运行服务。
 
 ### 前提条件
 
@@ -168,32 +168,34 @@
 
     **注意**: 在 Docker Compose 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:5173` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
 
-2.  **创建 `docker-compose.yml` 文件**
+2.  **使用 `docker-compose.yml` 文件**
 
-    在项目根目录下创建 `docker-compose.yml` 文件，内容如下：
+    本项目根目录下已提供 `docker-compose.yml` 文件，内容如下：
 
-    ```yaml
+```yaml
 version: '3.8'
 services:
-    frontend:
-    image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取前端镜像
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
     ports:
-        - "5173:5173" # 前端服务端口，局域网内可通过宿主机IP:5173访问
-    volumes:
-        - .:/app
+      - "5173:80" # 前端服务端口，将容器的80端口映射到宿主机的5173端口
     depends_on:
-        - backend
+      - backend
 
-    backend:
-    image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取后端镜像
+  backend:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
     ports:
-        - "3000:3000" # 后端服务端口，局域网内可通过宿主机IP:3000访问
+      - "3000:3000" # 后端服务端口
     volumes:
-        - ./server:/app/server
-        - /path/to/your/comics:/app/Comics # 挂载你的漫画目录
+      - ./server:/app/server
+      - /path/to/your/comics:/app/Comics # 挂载你的漫画目录，请替换为实际路径
     env_file:
-        - ./server/.env
-    ```
+      - ./server/.env
+```
 
     **请务必修改 `backend` 服务中的 `volumes` 挂载路径 `/path/to/your/comics` 为你的实际漫画存储路径。**
 
@@ -209,7 +211,7 @@ services:
 
 4.  **访问应用**
 
-    服务启动后，你可以在浏览器中访问 `http://<宿主机IP>:5173` (如果前端映射到 5173 端口) 来使用应用。例如，如果你的宿主机 IP 是 `192.168.1.100`，则访问 `http://192.168.1.100:5173`。
+    服务启动后，你可以在浏览器中访问 `http://localhost:5173` 来使用应用。
 
 ### 常用 Docker Compose 命令
 

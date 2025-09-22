@@ -6,8 +6,6 @@ services:
       dockerfile: Dockerfile
     ports:
       - "5173:80" # 前端服务端口，将容器的80端口映射到宿主机的5173端口
-    volumes:
-      - .:/app
     depends_on:
       - backend
 
