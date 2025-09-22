@@ -173,26 +173,26 @@
     在项目根目录下创建 `docker-compose.yml` 文件，内容如下：
 
     ```yaml
-    version: '3.8'
-    services:
-      frontend:
-        image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取前端镜像
-        ports:
-          - "5173:5173" # 前端服务端口，局域网内可通过宿主机IP:5173访问
-        volumes:
-          - .:/app
-        depends_on:
-          - backend
+version: '3.8'
+services:
+    frontend:
+    image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取前端镜像
+    ports:
+        - "5173:5173" # 前端服务端口，局域网内可通过宿主机IP:5173访问
+    volumes:
+        - .:/app
+    depends_on:
+        - backend
 
-      backend:
-        image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取后端镜像
-        ports:
-          - "3000:3000" # 后端服务端口，局域网内可通过宿主机IP:3000访问
-        volumes:
-          - ./server:/app/server
-          - /path/to/your/comics:/app/Comics # 挂载你的漫画目录
-        env_file:
-          - ./server/.env
+    backend:
+    image: ojdev/local_comic_reader:latest # 从 Docker Hub 拉取后端镜像
+    ports:
+        - "3000:3000" # 后端服务端口，局域网内可通过宿主机IP:3000访问
+    volumes:
+        - ./server:/app/server
+        - /path/to/your/comics:/app/Comics # 挂载你的漫画目录
+    env_file:
+        - ./server/.env
     ```
 
     **请务必修改 `backend` 服务中的 `volumes` 挂载路径 `/path/to/your/comics` 为你的实际漫画存储路径。**
