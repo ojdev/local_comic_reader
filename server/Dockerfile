@@ -19,7 +19,7 @@ WORKDIR /app/server
 
 RUN npm install --production
 
-COPY --from=builder /app/server/client/dist ./client/dist
+COPY --from=builder /app/server/dist ./client/dist
 
 EXPOSE 3000
 
