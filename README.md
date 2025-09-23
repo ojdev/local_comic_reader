@@ -111,7 +111,6 @@
     使用以下命令运行 Docker 容器，并挂载你的漫画目录和环境变量文件：
     ```bash
     docker run -d \
-      -p 5173:5173 \
       -p 3000:3000 \
       -v /path/to/your/comics:/app/Comics \
       --env-file ./server/.env \
@@ -121,7 +120,7 @@
 
 4.  **验证部署是否成功**
 
-    服务启动后，你可以在浏览器中访问 `http://localhost:5173` 来使用应用。
+    服务启动后，你可以在浏览器中访问 `http://localhost:3000` 来使用应用。
     你可以通过以下命令查看容器日志：
     ```bash
     docker logs <container_id_or_name>
@@ -163,10 +162,10 @@
     示例 `server/.env`:
     ```
     COMIC_BASE_PATH=/app/Comics
-    CORS_ORIGIN=http://localhost:5173
+    CORS_ORIGIN=http://localhost:3000
     ```
 
-    **注意**: 在 Docker Compose 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:5173` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
+    **注意**: 在 Docker Compose 环境中，`CORS_ORIGIN` 通常设置为前端服务的地址，例如 `http://localhost:3000` 或 `http://localhost:80` (如果前端通过 Nginx 代理)。
 
 2.  **使用 `docker-compose.yml` 文件**
 
@@ -175,29 +174,17 @@
 ```yaml
 version: '3.8'
 services:
-  frontend:
-    build:
-      context: .
-      dockerfile: Dockerfile
+  local_comic_reader:
+    image: ojdev/local_comic_reader:latest
     ports:
-      - "5173:80" # 前端服务端口，将容器的80端口映射到宿主机的5173端口
-    depends_on:
-      - backend
-
-  backend:
-    build:
-      context: ./server
-      dockerfile: Dockerfile
-    ports:
-      - "3000:3000" # 后端服务端口
+      - "3000:3000" # 服务端口
     volumes:
-      - ./server:/app/server
       - /path/to/your/comics:/app/Comics # 挂载你的漫画目录，请替换为实际路径
     env_file:
       - ./server/.env
 ```
 
-    **请务必修改 `backend` 服务中的 `volumes` 挂载路径 `/path/to/your/comics` 为你的实际漫画存储路径。**
+    **请务必修改 `volumes` 挂载路径 `/path/to/your/comics` 为你的实际漫画存储路径。**
 
 3.  **启动服务**
 
@@ -211,7 +198,7 @@ services:
 
 4.  **访问应用**
 
-    服务启动后，你可以在浏览器中访问 `http://localhost:5173` 来使用应用。
+    服务启动后，你可以在浏览器中访问 `http://localhost:3000` 来使用应用。
 
 ### 常用 Docker Compose 命令
 
