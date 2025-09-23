@@ -108,12 +108,19 @@ const checkNewComics = async () => {
     const serverComicCount = response.data.count;
     const lastComicCount = parseInt(localStorage.getItem('lastComicCount') || '0');
 
+    console.log('Debug: serverComicCount =', serverComicCount);
+    console.log('Debug: lastComicCount =', lastComicCount);
+    console.log('Debug: serverComicCount > lastComicCount =', serverComicCount > lastComicCount);
+
     if (serverComicCount > lastComicCount) {
       showRefreshPrompt.value = true;
     } else {
       showRefreshPrompt.value = false;
-      localStorage.setItem('lastComicCount', serverComicCount);
     }
+    // Always update localStorage with the current server comic count after the check
+    // This ensures that for the next check, lastComicCount reflects the latest known server count.
+    localStorage.setItem('lastComicCount', serverComicCount);
+
   } catch (error) {
     console.error('Error checking new comics:', error);
   }
@@ -218,12 +225,19 @@ onBeforeRouteLeave((to, from, next) => {
   next();
 });
 
-const refreshComics = () => {
-  page.value = 1; // Reset page to 1
-  comics.value = []; // Clear existing comics
-  fetchComics();
-  checkNewComics(); // Add this line to update localStorage after refresh
-  showRefreshPrompt.value = false; // 点击刷新后隐藏提示
+const refreshComics = async () => {
+  try {
+    await axios.post('http://localhost:3000/api/refresh-cache');
+    page.value = 1; // Reset page to 1
+    comics.value = []; // Clear existing comics
+    await fetchComics();
+    await checkNewComics(); // Add this line to update localStorage after refresh
+    showRefreshPrompt.value = false; // 点击刷新后隐藏提示
+    alert('漫画缓存已刷新！');
+  } catch (error) {
+    console.error('Error refreshing comic cache:', error);
+    alert('刷新漫画缓存失败！');
+  }
 };
 
 const formatComicTitle = (title) => {

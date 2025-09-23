@@ -119,6 +119,9 @@ app.get('/api/tags', (req, res) => {
     res.json({ tags: uniqueTags });
 });
 
+// 静态文件服务：前端构建文件
+app.use(express.static(path.join(__dirname, 'client', 'dist')));
+
 // 静态文件服务：漫画图片
 app.use('/comics', express.static(process.env.COMIC_BASE_PATH || path.join(__dirname, '..', 'Comics')));
 
