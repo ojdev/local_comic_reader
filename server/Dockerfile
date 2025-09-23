@@ -1,26 +1,25 @@
 FROM node:20-alpine AS builder
 
-WORKDIR /app/client
+WORKDIR /app
+COPY . .
 
-COPY server/client/package.json server/client/package-lock.json ./
+# Builder stage for client
+WORKDIR /app/server/client
 
 RUN npm install
-
-COPY server/client ./
-
 RUN npm run build
 
 FROM node:20-alpine
 
 WORKDIR /app
+COPY . .
 
-COPY server/package.json server/package-lock.json ./
+# Runner stage for server
+WORKDIR /app/server
 
 RUN npm install --production
 
-COPY server/. .
-
-COPY --from=builder /app/client/dist ./dist
+COPY --from=builder /app/server/client/dist ./client/dist
 
 EXPOSE 3000
 
