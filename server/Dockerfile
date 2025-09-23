@@ -2,11 +2,11 @@ FROM node:20-alpine AS builder
 
 WORKDIR /app/client
 
-COPY server/package.json server/package-lock.json ./
+COPY client/package.json client/package-lock.json ./
 
 RUN npm install
 
-COPY server/. .
+COPY client ./
 
 RUN npm run build
 
@@ -14,11 +14,11 @@ FROM node:20-alpine
 
 WORKDIR /app
 
-COPY package.json package-lock.json ./
+COPY server/package.json server/package-lock.json ./
 
 RUN npm install --production
 
-COPY . .
+COPY server/. .
 
 COPY --from=builder /app/client/dist ./dist
 
