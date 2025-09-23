@@ -77,8 +77,14 @@
 ### 前端设置
 1.  回到项目根目录: `cd ..` (如果当前在 `server` 目录)
 2.  安装依赖: `npm install`
-3.  启动前端开发服务器: `npm run dev`
-4.  访问 `http://localhost:5173/` 查看应用。
+3.  如果后端服务不在 `http://localhost:3000` 运行，或者前端需要通过代理访问后端，请在项目根目录创建 `.env` 文件，并配置 `VITE_API_BASE_URL` 环境变量。
+    示例 `.env`:
+    ```
+    VITE_API_BASE_URL=http://localhost:3000/api
+    ```
+    **注意**: `VITE_API_BASE_URL` 应该指向后端 API 的完整路径，例如 `http://localhost:3000/api`。如果未设置，前端将默认使用相对路径 `/api`。
+4.  启动前端开发服务器: `npm run dev`
+5.  访问 `http://localhost:5173/` 查看应用。
 
 ## Docker Hub 镜像部署
 
