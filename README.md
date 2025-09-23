@@ -26,6 +26,7 @@
 
 本系统采用前后端分离的架构，前端负责用户界面的展示和交互，后端负责数据存储、业务逻辑处理和 API 接口提供。
 
+*   **配置灵活性**: 前后端均支持通过环境变量进行灵活配置，如 API 基础 URL、漫画存储路径和 CORS 策略等。
 *   **性能优化**: 通过图片懒加载 (Vue-Lazyload) 和后端数据缓存 (comicCache) 提升系统响应速度和用户体验。
 *   **用户体验**: 实现滚动位置和页码的保存与恢复，确保用户在返回漫画书架时能回到上次浏览的位置。
 *   **安全性**: 后端 API 引入速率限制，防止恶意请求和滥用。
@@ -37,7 +38,7 @@
 *   **组件化**: 页面由多个 Vue 组件构成，如 `ComicShelf.vue` (漫画书架), `ComicDetail.vue` (漫画详情), `ComicReader.vue` (漫画阅读器) 等。
 *   **路由管理**: 使用 Vue Router 进行页面导航，支持动态路由和路由守卫。
 *   **状态管理**: 局部状态通过 Vue 的 `ref` 和 `computed` 管理，全局状态（如用户认证、主题等，如果存在）可以通过 Vuex 或 Pinia 管理（当前项目未明确体现全局状态管理，但可扩展）。
-*   **API 调用**: 统一使用 `Axios` 封装的 `apiClient` 进行后端数据请求。
+*   **API 调用**: 统一使用 `Axios` 封装的 `apiClient` 进行后端数据请求，支持通过环境变量 `VITE_API_BASE_URL` 配置 API 基础 URL。
 
 ### 后端架构
 *   **RESTful API**: 提供标准的 RESTful API 接口，供前端调用，包括获取漫画列表、漫画详情、更新标签等。
@@ -99,7 +100,7 @@
 
     从 Docker Hub 拉取最新镜像：
     ```bash
-    docker pull ojdev/local_comic_reader:latest
+    docker pull luacloud/local_comic_reader:latest
     ```
 
 2.  **配置必要的环境变量**
@@ -116,11 +117,10 @@
 
     使用以下命令运行 Docker 容器，并挂载你的漫画目录和环境变量文件：
     ```bash
-    docker run -d \
       -p 3000:3000 \
       -v /path/to/your/comics:/app/Comics \
       --env-file ./server/.env \
-      ojdev/local_comic_reader:latest
+      luacloud/local_comic_reader:latest
     ```
     **请务必修改 `/path/to/your/comics` 为你的实际漫画存储路径。**
 
@@ -148,7 +148,7 @@
     ```
 *   **删除镜像**:
     ```bash
-    docker rmi ojdev/local_comic_reader:latest
+    docker rmi luacloud/local_comic_reader:latest
     ```
 
 ## Docker Compose 部署
@@ -181,7 +181,7 @@
 version: '3.8'
 services:
   local_comic_reader:
-    image: ojdev/local_comic_reader:latest
+    image: luacloud/local_comic_reader:latest
     ports:
       - "3000:3000" # 服务端口
     volumes:
