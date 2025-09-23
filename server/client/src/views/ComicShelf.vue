@@ -63,7 +63,7 @@ const fetchComics = async (loadMore = false) => {
   if (isLoading.value || (!hasMoreComics.value && loadMore)) return;
   isLoading.value = true;
   try {
-    const response = await axios.get(`http://localhost:3000/api/comics?page=${page.value}&limit=${pageSize}`);
+    const response = await apiClient.get(`/comics?page=${page.value}&limit=${pageSize}`);
     const fetchedComics = response.data.comics; // 从 response.data 中获取 comics 数组
     const totalComics = response.data.totalComics; // 获取总漫画数量
 
@@ -103,7 +103,7 @@ const loadMoreComics = () => {
 
 const checkNewComics = async () => {
   try {
-    const response = await axios.get('http://localhost:3000/api/comic-count');
+    const response = await apiClient.get('/comic-count');
     console.log('API Response for comic-count:', response.data);
     const serverComicCount = response.data.count;
     const lastComicCount = parseInt(localStorage.getItem('lastComicCount') || '0');
@@ -227,7 +227,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 const refreshComics = async () => {
   try {
-    await axios.post('http://localhost:3000/api/refresh-cache');
+    await apiClient.post('/refresh-cache');
     page.value = 1; // Reset page to 1
     comics.value = []; // Clear existing comics
     await fetchComics();

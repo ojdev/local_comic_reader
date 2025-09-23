@@ -1,11 +1,8 @@
 import axios from 'axios';
 
 const apiClient = axios.create({
-  baseURL: 'http://localhost:3000/api', // 你的后端 API 基础 URL
-  timeout: 10000, // 请求超时时间
-  headers: {
-    'Content-Type': 'application/json',
-  },
+  baseURL: import.meta.env.VITE_API_BASE_URL || '/api', // 你的后端 API 基础 URL
+  timeout: 5000, // 请求超时时间
 });
 
 // 请求拦截器
