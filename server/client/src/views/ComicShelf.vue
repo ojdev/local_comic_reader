@@ -1,35 +1,37 @@
 <template>
   <div class="comic-shelf">
-    <div class="header">
-      <h1>漫画书架</h1>
-      <button @click="refreshComics" class="refresh-button">刷新缓存</button>
-    </div>
-    <div v-if="pulling" class="pull-to-refresh-indicator" :style="{ height: pullDistance + 'px' }">
-      <span v-if="pullDistance < refreshThreshold">下拉刷新...</span>
-      <span v-else>释放刷新</span>
-    </div>
-    <div class="tag-filter-container">
-      <span
-        v-for="tag in allAvailableTags"
-        :key="tag"
-        :class="['filter-tag', { 'selected': selectedTags.includes(tag) }]"
-        @click="toggleTag(tag)"
-      >
-        {{ tag }}
-      </span>
-    </div>
-    <div v-if="showRefreshPrompt" class="refresh-prompt">
-      检测到新的漫画目录，请点击刷新缓存按钮。
-    </div>
-    <div class="comic-grid">
-      <div v-for="comic in filteredComics" :key="comic.title" class="comic-card" @click="viewComicDetail(comic.title)">
-        <img v-lazy="comic.cover" :alt="comic.title" class="comic-cover" />
-        <h3 class="comic-title">{{ formatComicTitle(comic.title) }}</h3>
+    <div class="container">
+      <div class="header">
+        <h1>漫画书架</h1>
+        <button @click="refreshComics" class="refresh-button">刷新缓存</button>
       </div>
+      <div v-if="pulling" class="pull-to-refresh-indicator" :style="{ height: pullDistance + 'px' }">
+        <span v-if="pullDistance < refreshThreshold">下拉刷新...</span>
+        <span v-else>释放刷新</span>
+      </div>
+      <div class="tag-filter-container">
+        <span
+          v-for="tag in allAvailableTags"
+          :key="tag"
+          :class="['filter-tag', { 'selected': selectedTags.includes(tag) }]"
+          @click="toggleTag(tag)"
+        >
+          {{ tag }}
+        </span>
+      </div>
+      <div v-if="showRefreshPrompt" class="refresh-prompt">
+        检测到新的漫画目录，请点击刷新缓存按钮。
+      </div>
+      <div class="comic-grid">
+        <div v-for="comic in filteredComics" :key="comic.title" class="comic-card" @click="viewComicDetail(comic.title)">
+          <img v-lazy="comic.cover" :alt="comic.title" class="comic-cover" />
+          <h3 class="comic-title">{{ formatComicTitle(comic.title) }}</h3>
+        </div>
+      </div>
+      <button v-if="showBackToTopButton" @click="scrollToTop" class="back-to-top-button">
+        ↑
+      </button>
     </div>
-    <button v-if="showBackToTopButton" @click="scrollToTop" class="back-to-top-button">
-      ↑
-    </button>
   </div>
 </template>
 
@@ -271,11 +273,23 @@ const filteredComics = computed(() => {
 const viewComicDetail = (comicTitle) => {
   router.push({ name: 'ComicDetail', params: { comicTitle } });
 };
+
+const deleteComic = async (id) => {
+  try {
+    await apiClient.delete(`/comics/${id}`);
+    fetchComics(); // 重新加载漫画列表
+  } catch (error) {
+    console.error('Error deleting comic:', error);
+    // 错误已经在 apiClient 的响应拦截器中处理
+  }
+};
 </script>
 
 <style scoped>
 .comic-shelf {
-  padding: 20px;
+  /* padding: 20px; */ /* 为首页添加内边距 */
+  min-height: 100vh; /* 确保至少占满一个视口高度 */
+  box-sizing: border-box; /* 边框和内边距包含在元素的总宽度和高度内 */
 }
 
 .header {
@@ -283,6 +297,9 @@ const viewComicDetail = (comicTitle) => {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 20px;
+  /* padding: 10px 20px; */ /* 为头部添加内边距，使其内容不紧贴边缘 */
+  background-color: #fff; /* 可选：为头部添加背景色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 可选：为头部添加阴影 */
 }
 
 .refresh-button {
@@ -367,15 +384,3 @@ const viewComicDetail = (comicTitle) => {
   }
 }
 </style>
-
-<script>
-    const deleteComic = async (id) => {
-      try {
-        await apiClient.delete(`/comics/${id}`);
-        fetchComics(); // 重新加载漫画列表
-      } catch (error) {
-        console.error('Error deleting comic:', error);
-        // 错误已经在 apiClient 的响应拦截器中处理
-      }
-    };
-</script>

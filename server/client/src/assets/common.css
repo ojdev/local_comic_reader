@@ -1,3 +1,126 @@
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden; /* 隐藏横向滚动条 */
+}
+
+#app {
+  font-family: Avenir, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  color: #2c3e50;
+  padding: 0; /* 移除全局内边距 */
+  margin: 0;
+  min-height: 100vh;
+  background-color: #f0f2f5; /* 设置一个背景色 */
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.text-center {
+  text-align: center;
+}
+
+.loading-spinner {
+  border: 4px solid rgba(0, 0, 0, 0.1);
+  border-left-color: #22a7f0;
+  border-radius: 50%;
+  width: 30px;
+  height: 30px;
+  animation: spin 1s linear infinite;
+  margin: 20px auto;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+/* 针对所有图片设置最大宽度，防止图片溢出导致横向滚动 */
+img {
+  max-width: 100%;
+  height: auto;
+  display: block; /* 避免图片底部出现额外空间 */
+}
+
+/* 针对视频元素设置最大宽度 */
+video {
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+/* 针对表格设置响应式，防止表格内容过多导致横向滚动 */
+table {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap; /* 防止表格内容换行 */
+}
+
+/* 针对代码块设置响应式 */
+pre {
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-x: auto;
+}
+
+/* 针对长文本或可能溢出的元素 */
+.word-break-all {
+  word-break: break-all;
+}
+
+.overflow-auto {
+  overflow: auto;
+}
+
+.overflow-hidden {
+  overflow: hidden;
+}
+
+.tag-filter-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+  padding: 10px;
+  background-color: #f0f0f0;
+  border-radius: 8px;
+}
+
+.filter-tag {
+  padding: 8px 12px;
+  background-color: #e0e0e0;
+  border-radius: 20px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  font-size: 0.9em;
+}
+
+.filter-tag:hover {
+  background-color: #d0d0d0;
+}
+
+.filter-tag.selected {
+  background-color: #007bff;
+  color: white;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding: 10px 20px; /* 为头部添加内边距，使其内容不紧贴边缘 */
+  background-color: #fff; /* 可选：为头部添加背景色 */
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 可选：为头部添加阴影 */
+}
+
 .refresh-button {
   background-color: #4CAF50; /* Green */
   border: none;
@@ -72,33 +195,6 @@
   width: 60px !important; /* 进一步增大图标尺寸并强制应用 */
   height: 60px !important; /* 进一步增大图标尺寸并强制应用 */
   /* fill: white; */ /* 移除此行，直接在 path 上设置 fill */
-}
-.tag-filter-container {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-bottom: 20px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  border-radius: 8px;
-}
-
-.filter-tag {
-  padding: 8px 12px;
-  background-color: #e0e0e0;
-  border-radius: 20px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
-  font-size: 0.9em;
-}
-
-.filter-tag:hover {
-  background-color: #d0d0d0;
-}
-
-.filter-tag.selected {
-  background-color: #007bff;
-  color: white;
 }
 
 @media (max-width: 768px) {

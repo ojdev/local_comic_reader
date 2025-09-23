@@ -2,7 +2,7 @@
   <div class="comic-reader" @mouseenter="showControls = true" @mouseleave="showControls = false">
     <div :class="['header-controls', { 'show': showControls }]">
       <h2 v-if="comicTitle">{{ formatComicTitle(comicTitle) }}</h2>
-      <button @click="goBack">返回书架</button>
+      <button @click="goBack">⬅</button>
     </div>
     <div class="comic-page-container" @touchstart="handleTouchStart" @touchmove="handleTouchMove" @touchend="handleTouchEnd">
       <img :src="currentPage" alt="Comic Page" class="comic-page" />
@@ -132,14 +132,14 @@ const handleKeyDown = (event) => {
   left: 0;
   width: 100vw;
   height: 100vh;
-  padding: 0;
+  padding: 0; /* 确保没有内边距 */
   text-align: center;
   background-color: #000;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  overflow: hidden;
+  /* justify-content: center; */ /* 移除此属性，让内容自由填充 */
+  /* align-items: center; */ /* 移除此属性，让内容自由填充 */
+  overflow: hidden; /* 消除滚动条 */
 }
 
 .header-controls {
@@ -185,6 +185,7 @@ const handleKeyDown = (event) => {
   height: auto;
   object-fit: contain;
   border: none;
+  display: block; /* 确保图片是块级元素，消除可能存在的额外空间 */
 }
 
 .navigation-controls {

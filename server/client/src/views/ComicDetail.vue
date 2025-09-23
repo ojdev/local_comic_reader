@@ -395,27 +395,29 @@ const fetchAllAvailableTags = async () => {
 
 @media (max-width: 768px) {
   .comic-detail {
-    padding: 10px;
-    width: 100%; /* Ensure it takes full width */
-    box-sizing: border-box; /* Include padding in width calculation */
+    padding: 10px; /* 调整内边距 */
+    width: 100%; /* 确保占据全部宽度 */
+    box-sizing: border-box; /* 包含内边距在宽度计算内 */
+    overflow-x: hidden; /* 隐藏横向滚动条 */
   }
 
   .content {
-    flex-direction: column;
-    align-items: center;
+    flex-direction: column; /* 在小屏幕上垂直堆叠 */
+    align-items: center; /* 居中对齐 */
     gap: 15px;
   }
 
   .comic-cover {
-    width: 200px;
-    height: 300px;
+    width: 80%; /* 调整封面宽度为父容器的80% */
+    height: auto; /* 高度自动，保持比例 */
+    max-width: 300px; /* 最大宽度限制 */
   }
 
   .metadata-panel {
     padding: 10px;
     width: 100%;
-    max-width: 100%; /* Ensure it doesn't overflow */
-    box-sizing: border-box; /* Include padding in width calculation */
+    max-width: 100%; /* 确保不溢出 */
+    box-sizing: border-box; /* 包含内边距在宽度计算内 */
   }
 
   .comic-title-container h1 {
