@@ -137,8 +137,6 @@ const handleKeyDown = (event) => {
   background-color: #000;
   display: flex;
   flex-direction: column;
-  /* justify-content: center; */ /* 移除此属性，让内容自由填充 */
-  /* align-items: center; */ /* 移除此属性，让内容自由填充 */
   overflow: hidden; /* 消除滚动条 */
 }
 

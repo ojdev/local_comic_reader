@@ -93,7 +93,6 @@ const fetchComicDetail = async () => {
     };
   } catch (err) {
     error.value = 'Failed to load comic details.';
-    // console.error('Error fetching comic details:', err);
   } finally {
     loading.value = false;
   }
@@ -169,7 +168,7 @@ const fetchAllAvailableTags = async () => {
 .comic-detail {
   padding: 20px;
   color: #fff;
-  max-width: 800px;
+  width: 100%; /* Changed from max-width: 800px; to width: 100% */
   margin: 0 auto;
 }
 
@@ -202,8 +201,9 @@ const fetchAllAvailableTags = async () => {
 }
 
 .comic-cover {
-  width: 300px; /* Increased width */
-  height: 450px; /* Increased height proportionally */
+  width: 100%; /* Changed from fixed width to 100% */
+  height: auto; /* Changed from fixed height to auto */
+  max-width: 300px; /* Added max-width to limit size on larger screens */
   object-fit: cover;
   border-radius: 8px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
@@ -215,7 +215,7 @@ const fetchAllAvailableTags = async () => {
   padding: 15px;
   border-radius: 8px;
   min-width: 0; /* Allow metadata panel to shrink */
-  /* height: 450px; */ /* Removed fixed height to allow stretching */
+  overflow: hidden; /* Added to hide overflowing content */
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -227,15 +227,20 @@ const fetchAllAvailableTags = async () => {
 }
 
 .tags-section {
-  margin-top: 15px;
+  margin-top: 20px;
+  padding: 15px;
+  background-color: #333;
+  border-radius: 8px;
+  overflow: hidden; /* Added to prevent content overflow */
 }
 
-.tags-display {
+.tags-header {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
   margin-top: 5px;
   margin-bottom: 10px;
+  overflow: hidden; /* Added to prevent content overflow */
 }
 
 .tag {
@@ -395,15 +400,16 @@ const fetchAllAvailableTags = async () => {
 
 @media (max-width: 768px) {
   .comic-detail {
-    padding: 10px; /* 调整内边距 */
-    width: 100%; /* 确保占据全部宽度 */
-    box-sizing: border-box; /* 包含内边距在宽度计算内 */
+    padding: 10px;
+    width: 100%;
+    box-sizing: border-box;
     overflow-x: hidden; /* 隐藏横向滚动条 */
+    overflow-y: auto; /* 允许垂直滚动 */
   }
 
   .content {
-    flex-direction: column; /* 在小屏幕上垂直堆叠 */
-    align-items: center; /* 居中对齐 */
+    flex-direction: column;
+    align-items: center;
     gap: 15px;
   }
 

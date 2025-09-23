@@ -90,7 +90,6 @@ const fetchComics = async (loadMore = false) => {
     // currentComicCount.value = comics.value.length;
     // localStorage.setItem('lastComicCount', currentComicCount.value);
   } catch (error) {
-    console.error('Error fetching comics:', error);
   } finally {
     isLoading.value = false;
   }
@@ -106,13 +105,8 @@ const loadMoreComics = () => {
 const checkNewComics = async () => {
   try {
     const response = await apiClient.get('/comic-count');
-    console.log('API Response for comic-count:', response.data);
     const serverComicCount = response.data.count;
     const lastComicCount = parseInt(localStorage.getItem('lastComicCount') || '0');
-
-    console.log('Debug: serverComicCount =', serverComicCount);
-    console.log('Debug: lastComicCount =', lastComicCount);
-    console.log('Debug: serverComicCount > lastComicCount =', serverComicCount > lastComicCount);
 
     if (serverComicCount > lastComicCount) {
       showRefreshPrompt.value = true;
@@ -124,7 +118,6 @@ const checkNewComics = async () => {
     localStorage.setItem('lastComicCount', serverComicCount);
 
   } catch (error) {
-    console.error('Error checking new comics:', error);
   }
 };
 
@@ -279,7 +272,6 @@ const deleteComic = async (id) => {
     await apiClient.delete(`/comics/${id}`);
     fetchComics(); // 重新加载漫画列表
   } catch (error) {
-    console.error('Error deleting comic:', error);
     // 错误已经在 apiClient 的响应拦截器中处理
   }
 };
@@ -287,7 +279,7 @@ const deleteComic = async (id) => {
 
 <style scoped>
 .comic-shelf {
-  /* padding: 20px; */ /* 为首页添加内边距 */
+  padding: 20px; /* 为首页添加内边距 */
   min-height: 100vh; /* 确保至少占满一个视口高度 */
   box-sizing: border-box; /* 边框和内边距包含在元素的总宽度和高度内 */
 }
@@ -296,8 +288,8 @@ const deleteComic = async (id) => {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
-  /* padding: 10px 20px; */ /* 为头部添加内边距，使其内容不紧贴边缘 */
+  /* margin-bottom: 20px; */ /* 移除此属性，避免顶部空白 */
+  /* padding: 10px 20px; */ /* 移除此属性，避免顶部空白 */
   background-color: #fff; /* 可选：为头部添加背景色 */
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* 可选：为头部添加阴影 */
 }
@@ -378,6 +370,23 @@ const deleteComic = async (id) => {
 }
 
 @media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+  }
+
+  .header h1 {
+    margin-bottom: 10px;
+  }
+
+  .refresh-button {
+    width: 100%;
+  }
+
+  .comic-grid {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+  }
+
   .back-to-top-button {
     width: 48px;
     height: 48px;

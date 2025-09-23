@@ -18,7 +18,7 @@ html, body {
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  /* padding: 20px; */ /* 移除此内边距以实现全屏展示 */
 }
 
 .text-center {
@@ -194,7 +194,6 @@ pre {
 .back-to-top-button .icon {
   width: 60px !important; /* 进一步增大图标尺寸并强制应用 */
   height: 60px !important; /* 进一步增大图标尺寸并强制应用 */
-  /* fill: white; */ /* 移除此行，直接在 path 上设置 fill */
 }
 
 @media (max-width: 768px) {
