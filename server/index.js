@@ -119,15 +119,32 @@ app.get('/api/tags', (req, res) => {
     res.json({ tags: uniqueTags });
 });
 
+// API 接口：刷新漫画缓存
+app.post('/api/refresh-cache', async (req, res) => {
+    logger.info('API: refresh comic cache requested');
+    try {
+        await comicCache.initComicCache();
+        res.json({ message: 'Comic cache refreshed successfully.' });
+    } catch (error) {
+        logger.error(`Error refreshing comic cache: ${error.message}`, { stack: error.stack });
+        res.status(500).json({ message: 'Internal server error' });
+    }
+});
+
 // 静态文件服务：前端构建文件
-app.use(express.static(path.join(__dirname, 'client', 'dist')));
+app.use(express.static(path.join(__dirname, 'dist')));
 
 // 静态文件服务：漫画图片
 app.use('/comics', express.static(process.env.COMIC_BASE_PATH || path.join(__dirname, '..', 'Comics')));
 
 // 启动服务器
 app.listen(PORT, () => {
-    logger.info(`Server is running on port ${PORT}`);
+    logger.info(`Server running on port ${PORT}`);
+});
+
+// 对于所有未匹配的路由，返回 index.html，这对于单页应用是必需的
+app.use((req, res) => {
+    res.sendFile(path.join(__dirname, 'client', 'dist', 'index.html'));
 });
 
 // 全局错误处理中间件

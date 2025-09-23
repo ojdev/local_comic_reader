@@ -20,7 +20,7 @@ RUN npm install --production
 
 COPY . .
 
-COPY --from=builder /app/client/dist ./public
+COPY --from=builder /app/client/dist ./dist
 
 EXPOSE 3000
 
