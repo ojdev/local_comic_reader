@@ -383,8 +383,8 @@ const deleteComic = async (id) => {
   }
 
   .comic-grid {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
-    gap: 10px;
+    grid-template-columns: 50% 50%;
+    gap: 15px;
   }
 
   .back-to-top-button {

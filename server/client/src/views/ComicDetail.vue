@@ -248,7 +248,7 @@ const fetchAllAvailableTags = async () => {
   color: #fff;
   padding: 5px 10px;
   border-radius: 5px;
-  display: flex;
+  display: inline-flex;
   align-items: center;
   gap: 5px;
   font-size: 0.7em; /* Adjusted font size for tags */
